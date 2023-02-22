@@ -22,7 +22,7 @@ public class Application {
 
         // Find the customer by ID
         Customer retrievedCustomer = entityManager.find(Customer.class, customer.getId());
-        System.out.println("Retrieved customer: " + retrievedCustomer);
+        System.out.println("Retrieved customer: " + retrievedCustomer.getFirstName());
 
         // Delete the customer from the database
         entityManager.getTransaction().begin();
