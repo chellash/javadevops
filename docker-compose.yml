@@ -2,11 +2,10 @@ version: "1"
 services:
   app:
     build: .
-    depends_on: 
-      - db
-    entrypoint: mvn exec:java
+    entrypoint: mvn package test
     volumes:
       - m2:/root/.m2
+      - ./src:/src
   db:
     image: mysql    
     ports: 
