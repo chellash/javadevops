@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-
 public class TestCustomerService {
     @Mock
     private EntityManager entityManager;

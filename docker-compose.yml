@@ -1,25 +1,61 @@
-version: "1"
+version: "3.4"
 services:
-  app:
-    build: .
-    entrypoint: mvn package test
+  gradle-build:
+    image: gradle
+    working_dir: /javadevops
+    command: gradle build && touch /tmp/service_completed_successfully
     volumes:
-      - m2:/root/.m2
-      - ./src:/src
+      - gradle_cache:/root/.gradle/caches
+      - .:/javadevops
   db:
     image: mysql    
     ports: 
       - '3306:3306'
     expose: 
       - 3306
+    depends_on:
+      - gradle-build
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: 'customerdb'
       MYSQL_PORT: '3306'
     volumes:
-      - my-db:/var/lib/mysql
+      - mysqldb:/var/lib/mysql
+      - ./data:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping --silent"]
+  backend:
+    image: payara/server-full
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["asadmin", "start-domain", "--verbose", "--postbootcommandfile", "/javadevops/payara-boot.asadmin"]
+    volumes:
+      - .:/javadevops
+    ports:
+      - '4848:4848'
+      - '8080:8080'
+      - '8181:8181'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    environment:
+      DB_HOST: 'db'
+      DB_PASSWORD: 'root'
+      DB_NAME: 'customerdb'
+      DB_PORT: '3306'  
+  deploy:
+    image: payara/server-full
+    command: ["asadmin", "--passwordfile", "/javadevops/payara-passwordfile", "--host", "backend", "--port", "4848", "deploy", "--name", "javadevops", /javadevops/build/libs/javadevops.war]
+    volumes:
+      - .:/javadevops
+    depends_on:
+      backend:
+        condition: service_healthy
 
 # Names our volume
 volumes:
-  my-db:
-  m2:
+  mysqldb:
+  gradle_cache:

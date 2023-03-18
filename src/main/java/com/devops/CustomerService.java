@@ -8,7 +8,7 @@ import java.util.List;
 @Stateless
 public class CustomerService {
 
-    @PersistenceContext(unitName="jpa-example")
+    @PersistenceContext(unitName="javadevops")
     private EntityManager entityManager;
 
     public Customer getCustomer(Long id) {
