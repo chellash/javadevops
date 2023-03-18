@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
                                  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
              version="2.2">
-    <persistence-unit name="jpa-example" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="javadevops" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>com.javadevops.Customer</class>
         <jta-data-source>java:/comp/env/jdbc/mysql</jta-data-source>
