@@ -1,3 +1,14 @@
+## [test-tomee](https://github.com/chellash/javadevops/commit/347a850b24adc091b838e001db7ef304832b478b)(2023-03-30)
+
+ | Technology | Software |
+ | ---------- | -------- |
+ | EJB | Payara |
+ | Test | Tomee Embedded |
+ | JPA | OpenEJB |
+ | Build | Gradle |
+ | Datasource | MySql |
+ | Container | Docker |
+
 ## [ejb-payara](https://github.com/chellash/javadevops/commit/553847a8e87afc5460c2f17e9696eeb7ed21b87f) (2023-03-19)
 
  | Technology | Software |
