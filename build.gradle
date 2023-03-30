@@ -1,7 +1,7 @@
 plugins {
     id 'war'
+    id 'com.ryandens.javaagent-test' version "0.5.0"
 }
-
 repositories {
     mavenCentral()
 }
@@ -17,4 +17,15 @@ dependencies {
     testImplementation  'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testImplementation  'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     testImplementation  'org.mockito:mockito-junit-jupiter:4.3.1'
+    // Payara Micro dependencies
+    testImplementation 'org.apache.tomee:openejb-core:8.0.14'
+
+    testJavaagent 'org.apache.openejb:openejb-javaagent:4.7.5'
+}
+
+test {
+    useJUnitPlatform()
+
+    // Set the system property for the embedded container
+    systemProperty 'com.sun.enterprise.module.resolve.useRepositoryService', 'false'
 }

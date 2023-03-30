@@ -1,20 +1,11 @@
 version: "3.4"
 services:
-  gradle-build:
-    image: gradle
-    working_dir: /javadevops
-    command: gradle build && touch /tmp/service_completed_successfully
-    volumes:
-      - gradle_cache:/root/.gradle/caches
-      - .:/javadevops
   db:
     image: mysql    
     ports: 
       - '3306:3306'
     expose: 
       - 3306
-    depends_on:
-      - gradle-build
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_DATABASE: 'customerdb'
@@ -24,11 +15,26 @@ services:
       - ./data:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping --silent"]
-  backend:
-    image: payara/server-full
+  gradle-build:
+    image: gradle
+    working_dir: /javadevops
+    command: gradle clean  build  && touch /tmp/service_completed_successfully
+    volumes:
+      - gradle_cache:/root/.gradle/caches
+      - .:/javadevops
     depends_on:
       db:
         condition: service_healthy
+    environment:
+      DB_HOST: 'db'
+      DB_USER: 'root'
+      DB_PASSWORD: 'root'
+      DB_NAME: 'customerdb'
+      DB_PORT: '3306'  
+  backend:
+    image: payara/server-full
+    depends_on:
+      - gradle-build
     command: ["asadmin", "start-domain", "--verbose", "--postbootcommandfile", "/javadevops/payara-boot.asadmin"]
     volumes:
       - .:/javadevops
@@ -43,6 +49,7 @@ services:
       retries: 5
     environment:
       DB_HOST: 'db'
+      DB_USER: 'root'
       DB_PASSWORD: 'root'
       DB_NAME: 'customerdb'
       DB_PORT: '3306'  

@@ -1,9 +1,12 @@
-package com.javadevops;
+package com.devops;
 
 import javax.persistence.EntityManager;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.devops.platform.Customer;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.*;

@@ -1,2 +1,2 @@
 create-jdbc-connection-pool --datasourceclassname com.mysql.jdbc.jdbc2.optional.MysqlDataSource --restype javax.sql.DataSource --property user=${DB_USER}:password=${DB_PASSWORD}:DatabaseName=${DB_NAME}:ServerName=${DB_HOST} mysqlpool
-create-jdbc-resource --connectionpoolid mysqlpool jdbc/mysql
+create-jdbc-resource --connectionpoolid mysqlpool mysqldb

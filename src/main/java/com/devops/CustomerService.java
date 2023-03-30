@@ -1,12 +1,15 @@
-package com.javadevops;
+package com.devops;
 
 import javax.ejb.Stateless;
+import javax.ejb.Local;
 import javax.persistence.PersistenceContext;
 import javax.persistence.EntityManager;
 import java.util.List;
+import com.devops.platform.Customer;
 
 @Stateless
-public class CustomerService {
+@Local(com.devops.platform.CustomerService.class)
+public class CustomerService implements com.devops.platform.CustomerService {
 
     @PersistenceContext(unitName="javadevops")
     private EntityManager entityManager;
@@ -16,7 +19,7 @@ public class CustomerService {
     }
 
     public List<Customer> getAllCustomers() {
-        return (List<Customer>)entityManager.createQuery("from Customer").getResultList();
+        return (List<Customer>)entityManager.createQuery("select c from Customer c").getResultList();
     }
     
     public Long createCustomer(Customer customer) {
