@@ -1,14 +1,12 @@
 package com.devops;
 
 import javax.ejb.Stateless;
-import javax.ejb.Local;
 import javax.persistence.PersistenceContext;
 import javax.persistence.EntityManager;
 import java.util.List;
 import com.devops.platform.Customer;
 
 @Stateless
-@Local(com.devops.platform.CustomerService.class)
 public class CustomerService implements com.devops.platform.CustomerService {
 
     @PersistenceContext(unitName="javadevops")
